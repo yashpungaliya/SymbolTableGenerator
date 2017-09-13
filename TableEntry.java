@@ -8,7 +8,7 @@ public class TableEntry{
 		type="";
 		kind="";
 	}
-	public TableEntry(String id,String t,String k){
+	public TableEntry(String id,String k,String t){
 		identifier=id;
 		type=t;
 		kind=k;

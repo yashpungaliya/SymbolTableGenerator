@@ -17,21 +17,20 @@ public class SymbolTable {
 		this.parent = parent;
 	}
 	
-	private void removeChild(SymbolTable st) {
-		children.remove(st);
-	}
 
-	public boolean insert(String name,String kind,String type) {
+	public TableEntry insert(String name,String kind,String type) {
+		System.out.println(kind+" : "+type+" "+name);
 		for(TableEntry entry:entries) {
 			if(entry.getId().equals(name)) {
-					return false;
+				System.out.println("Already Exists");
+					return null;
 			}
 		}
 
 		TableEntry newEntry=new TableEntry(name,kind,type);
-		entries.add(newEntry);
+		
 
-		return true;
+		return newEntry;
 	}
 	public TableEntry lookup(String name,SymbolTable st) {
 		if(st==null)
@@ -95,15 +94,43 @@ public class SymbolTable {
 							else
 								System.out.println("Not Found");
 							break;				
-			case "S":System.out.println("\nEnter \t<name> \n\t<kind> \n\t<type>\n");	
+			case "S":System.out.println("Enter \t<name> \n\t<kind> \n\t<type>\n");	
+							System.out.println("Kind = 'var / 'fun' \nType='void' / 'int' / 'bool' / 'double'");
 							String name1=s.next();
 							String kind=s.next();
 							String type=s.next();
-							boolean b=st.insert(name1,kind,type);
-							if(!b)
-								System.out.println("\nAlready Present\n");
-							else
-								System.out.println("\nEntry Added Successfully\n");
+							st.entries.add(st.insert(name1,kind,type));
+							System.out.println("Entry Added");
+							
+							if(kind.equalsIgnoreCase("fun")) {
+							System.out.println("Enter number of parameters : (0/1/2) ");
+							int num_par;
+							num_par=s.nextInt();
+							if(num_par==1) {
+								System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
+								String name2=s.next();
+								String type2=s.next();
+								st.entries.add(st.insert(name2, "par", type2));
+								System.out.println("Parameter added");
+								}
+								else if(num_par==2) {
+									System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
+									String namepar1=s.next();
+									String typepar1=s.next();
+									st.entries.add(st.insert(namepar1, "par", typepar1));
+									System.out.println("Parameter added");
+									
+									System.out.println("Enter parameter 2: \n\t<name>\n\t<type>");
+									String namepar2=s.next();
+									String typepar2=s.next();
+									st.entries.add(st.insert(namepar2, "par", typepar2));
+									System.out.println("Parameter added");
+								}
+								else
+									System.out.println("Nothing to Add");
+								
+								}
+														
 							break;
 			 default:
 							System.out.println("\nExiting...\n");
