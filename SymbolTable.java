@@ -28,6 +28,7 @@ public class SymbolTable {
 		}
 
 		TableEntry newEntry=new TableEntry(name,kind,type);
+		System.out.println("Entering...");
 		
 
 		return newEntry;
@@ -35,10 +36,10 @@ public class SymbolTable {
 	public TableEntry lookup(String name,SymbolTable st) {
 			for(TableEntry entry:st.entries) {
 			if(entry.getId().equals(name)) {
-				System.out.println("\nEntry Found");
+				System.out.println("Entry Found");
 				return entry;
 			}
-			System.out.println("\nNot found in current scope,searching in parent...");
+			System.out.println("Not found in current scope,searching in parent...");
 
 			}
 			if(st.parent!=null)
@@ -66,7 +67,7 @@ public class SymbolTable {
 	public  static void main(String[] args) {
 		// TODO Auto-generated method stub
 		SymbolTable st=new SymbolTable();
-		System.out.println("\nEnter task:\n"
+		System.out.println("Enter task:\n"
 				+ 				"\t1.E for Enter Scope\n"
 				+ 				"\t2.X for Exit Scope\n"
 				+ 				"\t3.L for Lookup\n"
@@ -77,62 +78,76 @@ public class SymbolTable {
 		
 		boolean flag=true;
 		while(flag) {
+			
 			String input=s.next();
 			switch(input) {
-			case "E":System.out.println("\nEntering a new scope");
-							st=st.enter_scope(st);
-							break;
-			case "X":System.out.println("\nExiting scope");
-							st=st.exit_scope(st);
-							break;
-			case "L":System.out.println("\nWhat do you want to lookup?\n");
+			case "E":System.out.println("Entering a new scope");
+				try {
+					st = st.enter_scope(st);
+				} catch (Exception e) {
+					System.out.print("Error, you have exited the table structure...");
+				}
+				break;
+			case "X":System.out.println("Exiting scope");
+							
+				try {
+					st = st.exit_scope(st);
+				} catch (Exception e) {
+					System.out.print("Error, you have exited the table structure...");
+				}
+				break;
+			case "L":System.out.println("What do you want to lookup? ");
 							String name=s.next();
-							TableEntry t=st.lookup(name, st);
-							if(t!=null)								
-								System.out.println(t);
-							else
-								System.out.println("Not Found");
-							break;				
-			case "S":System.out.println("Enter \t<name> \n\t<kind> \n\t<type>\n");	
+				try {
+					TableEntry t = st.lookup(name, st);
+					if (t != null)
+						System.out.println(t);
+					else
+						System.out.println("Not Found");
+				} catch (Exception e) {
+					System.out.println("Error...");
+				}
+				break;				
+			case "S":System.out.println("Enter \t<name> \n\t<kind> \n\t<type>");	
 							System.out.println("Kind = 'var / 'fun' \nType='void' / 'int' / 'bool' / 'double'");
 							String name1=s.next();
 							String kind=s.next();
 							String type=s.next();
-							st.entries.add(st.insert(name1,kind,type));
-							System.out.println("Entry Added");
-							
-							if(kind.equalsIgnoreCase("fun")) {
-							System.out.println("Enter number of parameters : (0/1/2) ");
-							int num_par;
-							num_par=s.nextInt();
-							if(num_par==1) {
-								System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
-								String name2=s.next();
-								String type2=s.next();
-								String par="par";
-								st.entries.add(st.insert(name2, par, type2));
-								System.out.println("Parameter added");
-								}
-								else if(num_par==2) {
-									String par="par";
-									System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
-									String namepar1=s.next();
-									String typepar1=s.next();
-									st.entries.add(st.insert(namepar1, par, typepar1));
-									System.out.println("Parameter added");
-									
-									System.out.println("Enter parameter 2: \n\t<name>\n\t<type>");
-									String namepar2=s.next();
-									String typepar2=s.next();
-									st.entries.add(st.insert(namepar2, par, typepar2));
-									System.out.println("Parameter added");
-								}
-								else
-									System.out.println("Nothing to Add");
-								
-								}
-														
-							break;
+				try {
+					st.entries.add(st.insert(name1, kind, type));
+					//System.out.println("Entry Added");
+					if (kind.equalsIgnoreCase("fun")) {
+						System.out.println("Enter number of parameters : (0/1/2) ");
+						int num_par;
+						num_par = s.nextInt();
+						if (num_par == 1) {
+							System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
+							String name2 = s.next();
+							String type2 = s.next();
+							String par = "par";
+							st.entries.add(st.insert(name2, par, type2));
+							System.out.println("Parameter added");
+						} else if (num_par == 2) {
+							String par = "par";
+							System.out.println("Enter parameter 1: \n\t<name>\n\t<type>");
+							String namepar1 = s.next();
+							String typepar1 = s.next();
+							st.entries.add(st.insert(namepar1, par, typepar1));
+							System.out.println("Parameter added");
+
+							System.out.println("Enter parameter 2: \n\t<name>\n\t<type>");
+							String namepar2 = s.next();
+							String typepar2 = s.next();
+							st.entries.add(st.insert(namepar2, par, typepar2));
+							System.out.println("Parameter added");
+						} else
+							System.out.println("Nothing to Add");
+
+					} 
+				} catch (Exception e) {
+					System.out.println("Error...");
+				}
+				break;
 			 default:
 							System.out.println("\nExiting...\n");
 							flag=false;
